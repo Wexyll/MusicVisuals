@@ -1,16 +1,27 @@
 package C19326126;
 
-import processing.core.PApplet;
+import ddf.minim.AudioBuffer;
+import ddf.minim.AudioInput;
+import ddf.minim.AudioPlayer;
+import ddf.minim.Minim;
 
-public class StarSystem extends PApplet{
+public class StarSystem extends Visual{
     //rotation and star generation bool
     float rotation;
     float rotation2;
     float rotation3;
     float rotation4;
     float rotation5;
+    float rotation6;
+    float rotation7;
     Boolean generation = false;
     boolean Setting = true;
+
+    //Music
+    Minim minim; // Connect to minim
+    AudioPlayer ap;
+    AudioBuffer ab; // Samples
+    float[] lerpedBuffer;
 
     // rings
     float w = 40;
@@ -28,7 +39,11 @@ public class StarSystem extends PApplet{
     float y2 [] = new float[200]; 
     float z2 [] = new float[200];
     float size2[] = new float[200];
+    float StarSize = 0;
+    float StarSizeSmoothed = 0;
+    float FillColor = 0;
 
+    //stars, planets and suns
     Sun Sun1, Sun2, Sun3, Sun4, Sun5, Sun6, Sun7, Sun8, Sun9, Sun10, Sun11, Sun12;
     
 
@@ -52,10 +67,25 @@ public class StarSystem extends PApplet{
 
 
     public void setup(){
-
+        startMinim();
+        loadAudio("heroplanet.mp3");
+        colorMode(HSB); 
     }
 
     public void draw(){
+        calculateAverageAmplitude(); 
+        try
+        {
+            calculateFFT(); //acquire frequency 
+        }
+        catch(VisualException e)
+        {
+            e.printStackTrace();
+        }
+        calculateFrequencyBands();
+
+        calculateAverageAmplitude(); 
+        
         int arr[] = {320, 150, 225, 425, 520, 650, 762, 835};
         noCursor();        
         background(0);
@@ -82,6 +112,12 @@ public class StarSystem extends PApplet{
             }
             else if(key == 'e' || key == 'E'){
                 Setting = false;
+            }
+            else if (key == ' ')
+            {
+                getAudioPlayer().cue(0);
+                getAudioPlayer().play();
+                
             }
         }
 
@@ -119,6 +155,7 @@ public class StarSystem extends PApplet{
             StarField();
 
         popMatrix(); //end star genertaion
+
         if(Setting == true){
             pushMatrix();
                 translate(width/2, height/2);
@@ -134,15 +171,17 @@ public class StarSystem extends PApplet{
 
         //rotational constants for different planets
         rotation += .15;
-        rotation2 += .85;
+        rotation2 += .55;
         rotation3 += 1.5;
-        rotation4 += .65;
-        rotation5 -= .1;
+        rotation4 += .1;
+        rotation5 -= .05;
+        rotation6 -= .07;
+        rotation7 -= .08;
     }
 
     private void Mercury() {
         pushMatrix();
-        rotate(radians(rotation));
+        rotate((radians(rotation3)));
         translate(-150, -10);
         Sun7.display();
         popMatrix();
@@ -150,7 +189,7 @@ public class StarSystem extends PApplet{
 
     private void Venus(){
         pushMatrix();
-        rotate(radians(rotation));
+        rotate((float) (radians(rotation2)+ .2));
         translate(220, 40);
         Sun10.display();
         popMatrix();
@@ -175,7 +214,7 @@ public class StarSystem extends PApplet{
     void Mars(){
         pushMatrix();
         translate(425,0);
-        rotate(radians(rotation4));
+        rotate(radians(rotation));
         Sun4.display();//Mars
             pushMatrix(); //Mars Moons
                 rotate(radians(rotation3));
@@ -192,7 +231,7 @@ public class StarSystem extends PApplet{
 
     private void Jupiter() {
         pushMatrix();
-        rotate(radians(radians(rotation5)));
+        rotate(radians((radians(rotation5))));
         translate(-520, 30);
         Sun8.display();
         popMatrix();
@@ -213,7 +252,7 @@ public class StarSystem extends PApplet{
 
     private void Uranus(){
         pushMatrix();
-        rotate(radians(rotation3));
+        rotate(radians(rotation6));
         translate(760, 70);
         Sun11.display();
         popMatrix();
@@ -221,7 +260,7 @@ public class StarSystem extends PApplet{
 
     private void Neptune(){
         pushMatrix();
-        rotate(radians(rotation2));
+        rotate(radians(rotation7));
         translate(830,90);
         Sun12.display();
         popMatrix();
@@ -295,21 +334,19 @@ public class StarSystem extends PApplet{
 
     private void StarField(){
         if(!generation){
-            
+        
         //seperate i's with if statements to be able to make stars of diff audio bands
         //eg if i > 25 &&i < 50 stroke map diffcolor * bands.length
-
-
         for(int i = 0; i < 200; i++){
             x[i] = random(-3500,3500);
             y[i] = random(-3000,3000);
-            z[i] = random(50,3000);
+            z[i] = random(150,3000);
             size[i] = random(3,18);
         }
         for(int j = 0; j < 200; j++){
             x2[j] = random(-3500,3500);
             y2[j] = random(-3000,3000);
-            z2[j] = random(-3000,-50);
+            z2[j] = random(-3000,-150);
             size2[j] = random(3,18);
         }
 
@@ -317,35 +354,57 @@ public class StarSystem extends PApplet{
         generation = true;
         }
         for(int i = 0; i < 100; i++){
-            //Z values ensure Planets won't strike a star
+            
             pushMatrix();
+            if(FillColor > 3){
+                FillColor=0;
+            }
+            StarSize = size[i] + (getAmplitude() * 100);
+            StarSizeSmoothed = lerp(StarSizeSmoothed, StarSize, 0.05f);
             translate(x[i], y[i], z[i]);
-            fill(255,0,0);
-            sphere(size[i]);
+            for(int o = 0; o < getSmoothedBands().length;o++){
+                fill(map(o, 0, getBands().length * FillColor, 255, 0), 255, 255);
+                FillColor += getBands().length * .000005f;
+            }
+            sphere(StarSizeSmoothed);          
             popMatrix();
         }
-        for(int i = 100; i < 200; i++){
-            //Z values ensure Planets won't strike a star
+        /*for(int i = 100; i < 200; i++){
             pushMatrix();
+            StarSize = size[i] + (getAmplitude() * 150);
+            StarSizeSmoothed = lerp(StarSizeSmoothed, StarSize, 0.1f);
             translate(x[i], y[i], z[i]);
-            fill(120,120,255);
-            sphere(size[i]);
+            fill(map(i, 0, getBands().length * FillColor, 255, 0), 120, 120);
+            sphere(StarSizeSmoothed);
+                FillColor += FillColor * 0.02;
             popMatrix();
         }
         for(int j = 0; j < 100; j++){
             pushMatrix();
+            StarSize = size[j] + (getAmplitude() * 100);
+            StarSizeSmoothed = lerp(StarSizeSmoothed, StarSize, 0.05f);
             translate(x2[j], y2[j], z2[j]);
-            fill(255,0,0);
-            sphere(size2[j]);
+            fill(map(j, 0, getBands().length * FillColor, 255, 0), 150, 20);
+            sphere(StarSizeSmoothed);
+            if(FillColor < 3){
+                FillColor += FillColor * 0.08;
+                }
+                else{
+                    FillColor = 1;
+                }
             popMatrix();
         }
         for(int j = 100; j < 200; j++){
             pushMatrix();
+            StarSize = size[j] + (getAmplitude() * 150);
+            StarSizeSmoothed = lerp(StarSizeSmoothed, StarSize, 0.1f);
             translate(x2[j], y2[j], z2[j]);
-            fill(120,120,255);
-            sphere(size2[j]);
+            fill(map(j, 0, getBands().length * FillColor, 255, 0), 100, 200);
+            sphere(StarSizeSmoothed);
+            FillColor += FillColor * 0.05;
+            print("Final Fill" + FillColor);
             popMatrix();
-        }
+        }*/
     }//end StarField
 
     public class Sun{

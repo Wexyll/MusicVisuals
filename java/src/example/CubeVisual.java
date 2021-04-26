@@ -50,12 +50,15 @@ public class CubeVisual extends Visual
         background(0);
         noFill();
         lights();
+        //Stroke for the box ------------------------------------------------
         stroke(map(getSmoothedAmplitude(), 0, 1, 0, 255), 255, 255);
         camera(0, 0, 0, 0, 0, -1, 0, 1, 0);
         translate(0, 0, -250);
                
+        //Value to change size Can use this for my Stars----------------------------------------------
         float boxSize = 50 + (getAmplitude() * 300);//map(average, 0, 1, 100, 400); 
-        smoothedBoxSize = lerp(smoothedBoxSize, boxSize, 0.2f);        
+        smoothedBoxSize = lerp(smoothedBoxSize, boxSize, 0.2f);    
+            
         if (twocubes)
         {
             pushMatrix();
