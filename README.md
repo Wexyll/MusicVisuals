@@ -1,4 +1,5 @@
-[![Youtube]https://i.ytimg.com/an_webp/RPSyNZxh_ZE/mqdefault_6s.webp?du=3000&sqp=CMKFrYQG&rs=AOn4CLCaaeBETcKJi65VwG9JvRkwe4IgRw](https://www.youtube.com/watch?v=RPSyNZxh_ZE&t)
+[![YouTube](https://i.ytimg.com/an_webp/RPSyNZxh_ZE/mqdefault_6s.webp?du=3000&sqp=CMKFrYQG&rs=AOn4CLCaaeBETcKJi65VwG9JvRkwe4IgRw)](https://www.youtube.com/watch?v=RPSyNZxh_ZE)
+
 
 # Music Visualiser Project
 
@@ -357,72 +358,3 @@ I came up with the idea of making a 3D Solar System right from the start and cam
 If I had to choose I am especially happy with my stars and how they react to the music and how widely spaced they are across the area of my project and how I came up with the idea to start one at the high end and the other at the low end so while the song was playing at certain times all of the stars would sync together as one light blue color before continuing forwards in their color band.
 
 I am also proud of commiting to make a 3D project and using my mathematics to work out the translates and positions of each planet and ring in the system and give each their own rotational speeds and unique little details to make each one special.
-
-# Markdown Tutorial
-
-This is *emphasis*
-
-This is a bulleted list
-
-- Item
-- Item
-
-This is a numbered list
-
-1. Item
-1. Item
-
-This is a [hyperlink](http://bryanduggan.org)
-
-# Headings
-## Headings
-#### Headings
-##### Headings
-
-This is code:
-
-```Java
-public void render()
-{
-	ui.noFill();
-	ui.stroke(255);
-	ui.rect(x, y, width, height);
-	ui.textAlign(PApplet.CENTER, PApplet.CENTER);
-	ui.text(text, x + width * 0.5f, y + height * 0.5f);
-}
-```
-
-So is this without specifying the language:
-
-```
-public void render()
-{
-	ui.noFill();
-	ui.stroke(255);
-	ui.rect(x, y, width, height);
-	ui.textAlign(PApplet.CENTER, PApplet.CENTER);
-	ui.text(text, x + width * 0.5f, y + height * 0.5f);
-}
-```
-
-This is an image using a relative URL:
-
-![An image](images/p8.png)
-
-This is an image using an absolute URL:
-
-![A different image](https://bryanduggandotorg.files.wordpress.com/2019/02/infinite-forms-00045.png?w=595&h=&zoom=2)
-
-This is a youtube video:
-
-[![YouTube](http://img.youtube.com/vi/J2kHSSFA4NU/0.jpg)](https://www.youtube.com/watch?v=J2kHSSFA4NU)
-
-This is a table:
-
-| Heading 1 | Heading 2 |
-|-----------|-----------|
-|Some stuff | Some more stuff in this column |
-|Some stuff | Some more stuff in this column |
-|Some stuff | Some more stuff in this column |
-|Some stuff | Some more stuff in this column |
-
