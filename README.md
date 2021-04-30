@@ -1,4 +1,4 @@
-[![YouTube](https://i.ytimg.com/an_webp/RPSyNZxh_ZE/mqdefault_6s.webp?du=3000&sqp=CMKFrYQG&rs=AOn4CLCaaeBETcKJi65VwG9JvRkwe4IgRw)](https://www.youtube.com/watch?v=RPSyNZxh_ZE)
+[![YouTube](https://i9.ytimg.com/vi/RPSyNZxh_ZE/mq1.jpg?sqp=CPTyr4QG&rs=AOn4CLCyOl-4TuSzgw5C1DERKn2FdCFn6g)](https://www.youtube.com/watch?v=RPSyNZxh_ZE)
 
 
 # Music Visualiser Project
