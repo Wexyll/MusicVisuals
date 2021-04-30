@@ -182,7 +182,10 @@ public class StarSystem extends Visual{
         if(Setting == true){
             pushMatrix();
                 translate(width/2, height/2);
-                Paths();
+                for(int i = 0; i < arr.length; i++){
+                    int k = arr[i];
+                    Paths(k); //Displaying rings in alternate format
+                }
             popMatrix();
         }
         else{
@@ -222,7 +225,7 @@ public class StarSystem extends Visual{
     private void Earth() {
         pushMatrix();//Earth
             rotate(radians(rotation2));
-            
+
             translate(320, 0);
             Sun2.display(90, 150);
             rotate(radians(rotation2));
@@ -290,21 +293,18 @@ public class StarSystem extends Visual{
     }//Neptune
 
     //Begin the white paths
-    private void Paths(){
+    private void Paths(int x){
+        
         pushMatrix();
             noFill();
             stroke(255);
             strokeWeight((float) .8);
             rotate(radians(rotation));
             //Calling elipses and placing them in the planets path
-            ellipse(0,0, 640, 640);
-            ellipse(0,0, 300, 300);
-            ellipse(0,0, 450, 450);
-            ellipse(0,0, 850, 850);
-            ellipse(0,0, 1040, 1040);
-            ellipse(0,0, 1300, 1300);
-            ellipse(0,0, 1525, 1525);
-            ellipse(0,0, 1670, 1670);
+            for(int i = 0; i < total; i++)
+            {
+            ellipse(0,0, x*2, x*2);     
+            }
 
             pushMatrix();//Earths ring for the moons path
                 rotate(radians(rotation2));
