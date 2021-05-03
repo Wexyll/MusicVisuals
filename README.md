@@ -358,3 +358,10 @@ I came up with the idea of making a 3D Solar System right from the start and cam
 If I had to choose I am especially happy with my stars and how they react to the music and how widely spaced they are across the area of my project and how I came up with the idea to start one at the high end and the other at the low end so while the song was playing at certain times all of the stars would sync together as one light blue color before continuing forwards in their color band.
 
 I am also proud of commiting to make a 3D project and using my mathematics to work out the translates and positions of each planet and ring in the system and give each their own rotational speeds and unique little details to make each one special.
+
+
+# Sources 
+- https://processing.org/tutorials/
+- Processing: A Programming Handbook for Visual Designers and Artists, Second Edition
+- https://www.youtube.com/channel/UCvjgXvBlbQiydffZU7m1_aw
+- http://mrfeinberg.com/peasycam/
